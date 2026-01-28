@@ -31,6 +31,7 @@ const GameBoard = (function() {
 
     // win intialize
     let win = false;
+    // player score and count initialize
     let player1Score = 0;
     let player2Score = 0;
     let player1Count = 0;
@@ -75,7 +76,7 @@ const GameBoard = (function() {
 
     // check win
     // check first three input only
-    function addScore(playerInput, playerCount) {
+    function addScore(playerInput) {
         return score = BoardAlgo[playerInput];
     }
 
@@ -92,7 +93,7 @@ const GameBoard = (function() {
     }
 
     // test GameBoard
-    function printGameBoard() {
+    function startGame() {
         checkInput("R1C1");
         console.log(player1Score);
         checkWin();
@@ -114,7 +115,7 @@ const GameBoard = (function() {
         console.log(GameBoard);
     }
 
-    return {printGameBoard};
+    return {startGame};
 })();
 
 // player 1 and player 2
@@ -133,4 +134,4 @@ const Player2 = (function() {
     return {turn};
 })();
 
-GameBoard.printGameBoard();
+GameBoard.startGame();
