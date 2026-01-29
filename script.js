@@ -1,17 +1,17 @@
 const GameBoard = (function() {
     const GameBoard = {
         // row 1 
-        R1C1: 0,
-        R1C2: 0,
-        R1C3: 0,
+        R1C1: false,
+        R1C2: false,
+        R1C3: false,
         // row 2
-        R2C1: 0,
-        R2C2: 0,
-        R2C3: 0,
+        R2C1: false,
+        R2C2: false,
+        R2C3: false,
         // row 3
-        R3C1: 0,
-        R3C2: 0,
-        R3C3: 0
+        R3C1: false,
+        R3C2: false,
+        R3C3: false
     };
 
     const BoardAlgo = {
@@ -35,29 +35,33 @@ const GameBoard = (function() {
     let player1Score = 0;
     let player2Score = 0;
     let gameOver = false;
+    let playerTurn = 1;
 
 
     // find player input and change the GameBoard
     // add player input into their respective array for win checking
     function addPlayerInput(playerInput, playerArr) {
-        if (GameBoard[playerInput] === 0) {
-            GameBoard[playerInput] = 1;
+        let validInput = false;
+        if (! GameBoard[playerInput]) {
+            validInput = true;
+            GameBoard[playerInput] = true;
+            playerArr.push(BoardAlgo[playerInput]);
         }
-        
-        playerArr.push(BoardAlgo[playerInput]);
+        return validInput;
     }
 
     // find player input and change the GameBoard
     function checkInput(playerInput) {
         // take turn check input until there is a win
         let gameOverContext = 0;
+        let validInput = false;
         if (! gameOver) {
-            if (Player1.turn) {
-                addPlayerInput(playerInput, player1Arr);
+            if (playerTurn === 1) {
+                validInput = addPlayerInput(playerInput, player1Arr);
+                console.log(validInput);
 
                 // set it to player two turn
-                Player2.turn = true;
-                Player1.turn = false;
+                playerTurn = 2;
 
                 if (checkWin(player1Arr)) {
                     // 1 -> player 1 wins
@@ -67,16 +71,15 @@ const GameBoard = (function() {
 
                 }
 
-            }  else if (Player2.turn) {
-                addPlayerInput(playerInput, player2Arr);
+            }  else if (playerTurn === 2) {
+                validInput = addPlayerInput(playerInput, player2Arr);
 
                 // set it to player 1 turn
-                Player2.turn = false;
-                Player1.turn = true;
+                playerTurn = 1;
 
                 if (checkWin(player2Arr)) {
                     // 2 -> player 2 wins
-                    gameOverContext = 2
+                    gameOverContext = 2;
                     gameOver = true;
                     player2Score += 1;
                 }
@@ -89,7 +92,7 @@ const GameBoard = (function() {
             }
         }
 
-        return [Player1.turn, Player2.turn, GameBoard[playerInput], gameOver, gameOverContext, player1Score, player2Score];
+        return [playerTurn, validInput, gameOver, gameOverContext, player1Score, player2Score];
     }
 
     // check win: Two Pointers Technique
@@ -118,6 +121,9 @@ const GameBoard = (function() {
     function resetGame() {
         player1Arr = [];
         player2Arr = [];
+        player1Score = 0;
+        player2Score = 0;
+        playerTurn = 1;
 
         Object.keys(GameBoard).forEach(key => {
             GameBoard[key] = 0;   
@@ -125,24 +131,9 @@ const GameBoard = (function() {
         gameOver = false;
     }
 
-    return {checkInput};
+    return {checkInput, resetGame};
 })();
 
-// player 1 and player 2
-const Player1 = (function() {
-    function turn() {
-        return true;
-    }
-
-    return {turn};
-})();
-const Player2 = (function() {
-    function turn() {
-        return false;
-    }
-
-    return {turn};
-})();
 
 // click on grid and return the id and checkInput
 // change score
@@ -168,30 +159,35 @@ const DOMLogic = (function() {
     document.addEventListener("click", (e) => {
         if (e.target.classList.contains("grid")) {
             // current grid 
-            grid = e.target;
+            const grid = e.target;
 
             // check status
             const result = GameBoard.checkInput(e.target.id);
-            const player1Turn = result[0];
-            const player2Turn = result[1]
-            let clickable = result[2];
-            const gameOver = result[3];
-            const gameOverContext = result[4];
-            const player1Score = result[5];
-            const player2Score = result[6];
+            const playerTurn = result[0];
+            const clickable = result[1];
+            const gameOver = result[2];
+            const gameOverContext = result[3];
+            const player1Score = result[4];
+            const player2Score = result[5];
 
-            if (! player1Turn && clickable === 1) {
-                showInput(grid, "X")
-                clickable = 0;
-            } else if (!player2Turn && clickable === 1) {
-                showInput(grid, "O")
-                clickable = 0;
+            if (playerTurn === 2 && clickable === true) {
+                showInput(grid, "X");
+            } else if (playerTurn === 1) {
+                showInput(grid, "O");
             }
+
 
             showResult(player1Score, scorePlayer1);
             showResult(player2Score, scorePlayer2);
-            console.log(player1Turn);
-            console.log(clickable);
+
+            const dialog = document.querySelector(".game-over");
+            const replayBtn = document.querySelector("button");
+            if (gameOver) {
+                dialog.showModal();
+            }
+            replayBtn.addEventListener("click", ()=>{
+
+            })
         }
     });
 })();
