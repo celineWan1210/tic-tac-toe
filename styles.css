@@ -96,3 +96,38 @@ body {
     font-family: var(--title-font);
     font-size: var(--title-font-size);
 }
+
+.game-over {
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    background-color: var(--secondary-color);
+
+    border-radius: 8px;
+}
+
+.game-over .content {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 8px;
+}
+.text {
+    font-size: var(--title-font-size);
+    font-family: var(--title-font);
+}
+
+.replay-button {
+    padding: var(--padding);
+    background-color: var(--secondary-color);
+    border: none;
+}
+
+.replay-button img {
+    width: 40px;
+}
+
+::backdrop {
+    background-color: var(--secondary-color);
+    opacity: 50%;
+}
