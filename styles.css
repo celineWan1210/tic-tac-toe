@@ -1,0 +1,45 @@
+@import url(https://db.onlinewebfonts.com/c/5f2a767429461ed48fadeff6ccf9e42c?family=Gamera);
+@font-face {
+    font-family: "Gamera";
+    src: url("https://db.onlinewebfonts.com/t/5f2a767429461ed48fadeff6ccf9e42c.eot");
+    src: url("https://db.onlinewebfonts.com/t/5f2a767429461ed48fadeff6ccf9e42c.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/5f2a767429461ed48fadeff6ccf9e42c.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/5f2a767429461ed48fadeff6ccf9e42c.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/5f2a767429461ed48fadeff6ccf9e42c.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/5f2a767429461ed48fadeff6ccf9e42c.svg#Gamera")format("svg");
+}
+
+:root {
+    --header-background-color: #24527a;
+    --title-font: "Gamera";
+    --secondary-color: #e0ebeb;
+    --title-font-size: 48px;
+    --bold: 600;
+
+    --shadow: 0px 8px 5px grey;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    /* border: 1px solid red; */
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--secondary-color);
+}
+
+/* header section */
+.header {
+    background-color: var(--header-background-color);
+    font-family: var(--title-font);
+    color: var(--secondary-color);
+    font-size: var(--title-font-size);
+    font-weight: var(--bold);
+    box-shadow: var(--shadow);
+    padding: 20px;
+}
+.header-title {
+    justify-self: center;
+}
