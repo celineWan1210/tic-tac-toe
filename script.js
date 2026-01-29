@@ -29,90 +29,110 @@ const GameBoard = (function() {
         R3C3: 6
     }
 
-    // win intialize
-    let win = false;
-    // player score and count initialize
-    let player1Score = 0;
-    let player2Score = 0;
-    let player1Count = 0;
-    let player2Count = 0
+    // playerArr initialize
+    let player1Arr = [];
+    let player2Arr = [];
+    let gameOver = false;
 
     // find player input and change the GameBoard
     // add player input into their respective array for win checking
-    function addPlayerInput(playerInput, playerCount) {
+    function addPlayerInput(playerInput, playerArr) {
         if (GameBoard[playerInput] === 0) {
             GameBoard[playerInput] = 1;
         }
+        
+        playerArr.push(BoardAlgo[playerInput]);
     }
 
     // find player input and change the GameBoard
     function checkInput(playerInput) {
         // take turn check input until there is a win
-        if (! win) {
+        if (! gameOver) {
             if (Player1.turn) {
-                addPlayerInput(playerInput, player1Score);
-                
-                // add player score
-                player1Score += addScore(playerInput);
-                player1Count += 1;
+                addPlayerInput(playerInput, player1Arr);
 
                 // set it to player two turn
                 Player2.turn = true;
                 Player1.turn = false;
 
-            }  else if (Player2.turn) {
-                addPlayerInput(playerInput, player2Score);
+                if (checkWin(player1Arr)) {
+                    console.log("Player 1 win");
+                    gameOver = true;
+                }
 
-                //  add player score
-                player2Score += addScore(playerInput);
-                player2Count += 1;
+            }  else if (Player2.turn) {
+                addPlayerInput(playerInput, player2Arr);
 
                 // set it to player 1 turn
                 Player2.turn = false;
                 Player1.turn = true;
+
+                if (checkWin(player2Arr)) {
+                    console.log("Player 2 win");
+                    gameOver = true;
+                }
+            }
+
+            if (player1Arr.length === 5 && player2Arr.length === 4) {
+                console.log("Draw");
+                gameOver = true;
             }
         }
     }
 
-    // check win
-    // check first three input only
-    function addScore(playerInput) {
-        return score = BoardAlgo[playerInput];
+    // check win: Two Pointers Technique
+    // check any three input = 15 then win
+    function checkWin(playerArr) {
+        console.log(playerArr);
+        // let n = player arr lengt
+        let n = playerArr.length
+        if (n >= 3) {
+            // first element
+            for (let i = 0; i < n - 2; i++) {
+                // second element
+                for (let j = i + 1; j < n - 1; j++) {
+                    // look for third number
+                    for (let k = j + 1; k < n; k++) {
+                        if (playerArr[i] + playerArr[j] + playerArr[k] === 15) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    function checkWin() {
-        if (player1Score === 15 && player1Count === 3) {
-            win = true;
-            console.log("Player 1 wins");
-        } else if (player2Score === 15 && player2Count === 3) {
-            win = true;
-            console.log("Player 2 wins");
-        } else if (player1Count === 5 && player2Count === 4){
-            console.log("Draw");
-        }
+    // reset game
+    function resetGame() {
+        player1Arr = [];
+        player2Arr = [];
+
+        Object.keys(GameBoard).forEach(key => {
+            GameBoard[key] = 0;   
+        });
+        gameOver = false;
     }
 
     // test GameBoard
     function startGame() {
         checkInput("R1C1");
-        console.log(player1Score);
-        checkWin();
         checkInput("R3C3");
-        console.log(player2Score);
-        checkWin();
         checkInput("R2C2");
-        console.log(player1Score);
-        checkWin();
         checkInput("R3C1");
-        console.log(player2Score);
         checkInput("R1C3");
-        console.log(player1Score);
         checkInput("R3C2");
-        console.log(player2Score);
-        checkWin();
-        
-        console.log(player1Count);
-        console.log(GameBoard);
+        checkInput("R1C2");
+
+        resetGame();
+        checkInput("R1C1");
+        checkInput("R3C3");
+        checkInput("R2C2");
+        checkInput("R3C1");
+        checkInput("R1C3");
+        checkInput("R1C2");
+        checkInput("R3C2");
+        checkInput("R2C3");
+        checkInput("R2C1");
     }
 
     return {startGame};
