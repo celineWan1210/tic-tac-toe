@@ -153,19 +153,61 @@ const DOMLogic = (function() {
         scoreDiv.textContent = playerScore;
     }
 
+    let player1Name = "";
+    let player2Name = "";
+    // show when page load
+    document.addEventListener('DOMContentLoaded', (e) => {
+        const playerEnterName = document.querySelector(".player-enter-name");
+        const submit = document.querySelector("#confirmBtn");
+        const player1NameSection = document.querySelector("#player-1-name");
+        const player2NameSection = document.querySelector("#player-2-name");
+        
+        const player1NameDisplay = document.querySelector(".player1");
+        const player2NameDisplay = document.querySelector(".player2");
+        playerEnterName.showModal();
+
+        submit.addEventListener("click", (e)=>{
+            e.preventDefault();
+
+            player1Name = player1NameSection.value;
+            player2Name = player2NameSection.value;
+
+            playerEnterName.close();
+
+            player1NameDisplay.textContent = player1Name;
+            player2NameDisplay.textContent = player2Name;
+        })
+    })
+
     const winnerInfo = document.querySelector(".winner-info");
     // show who's the winner
     function showWinner(context) {
         if (context === 1) {
-            winnerInfo.textContent = "Player 1 wins";
+            winnerInfo.textContent = `${player1Name} wins`;
         } else if (context === 2) {
-            winnerInfo.textContent = "Player 2 wins";
+            winnerInfo.textContent = `${player2Name} wins`;
         } else {
             winnerInfo.textContent = "Draw";
         }
     }
     function resetBoard() {
         document.querySelectorAll(".text-div").forEach(div => div.remove());
+    }
+
+    function showDialog(gameOver, gameOverContext) {
+        const dialog = document.querySelector(".game-over");
+        const replayBtn = document.querySelector("button");
+        if (gameOver) {
+            dialog.showModal();
+            showWinner(gameOverContext);
+        }
+        replayBtn.addEventListener("click", ()=>{
+            GameBoard.resetGame();
+            
+            // select all entered text-div and delete
+            resetBoard();
+            dialog.close();
+        })
     }
 
 
@@ -193,19 +235,7 @@ const DOMLogic = (function() {
             showResult(player1Score, scorePlayer1);
             showResult(player2Score, scorePlayer2);
 
-            const dialog = document.querySelector(".game-over");
-            const replayBtn = document.querySelector("button");
-            if (gameOver) {
-                dialog.showModal();
-                showWinner(gameOverContext);
-            }
-            replayBtn.addEventListener("click", ()=>{
-                GameBoard.resetGame();
-                
-                // select all entered text-div and delete
-                resetBoard();
-                dialog.close();
-            })
+            showDialog(gameOver, gameOverContext);
         }
     });
 })();
