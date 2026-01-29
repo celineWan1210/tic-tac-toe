@@ -39,37 +39,31 @@ const GameBoard = (function() {
 
     // find player input and change the GameBoard
     // add player input into their respective array for win checking
-    function addPlayerInput(playerInput, playerArr, grid, playerText) {
+    function addPlayerInput(playerInput, playerArr) {
         if (GameBoard[playerInput] === 0) {
             GameBoard[playerInput] = 1;
-
-            // can only click when gameboard is not filled
-            const textDiv = document.createElement("div");
-            textDiv.classList.add("text-div");
-            textDiv.textContent = playerText;
-            grid.appendChild(textDiv);
         }
         
         playerArr.push(BoardAlgo[playerInput]);
     }
 
     // show score
-    const player1Div = document.querySelector(".player-1-section");
-    const scorePlayer1 = player1Div.querySelector(".score");
-    const player2Div = document.querySelector(".player-2-section");
-    const scorePlayer2 = player2Div.querySelector(".score");
-    function showScore(scorePlayer) {
-        scorePlayer.textContent = player1Score;
-    }
+    // const player1Div = document.querySelector(".player-1-section");
+    // const scorePlayer1 = player1Div.querySelector(".score");
+    // const player2Div = document.querySelector(".player-2-section");
+    // const scorePlayer2 = player2Div.querySelector(".score");
+    // function showScore(scorePlayer) {
+    //     scorePlayer.textContent = player1Score;
+    // }
 
     // find player input and change the GameBoard
     function checkInput(playerInput) {
         // take turn check input until there is a win
-        const player1Text = "X";
-        const player2Text = "O"
+        // const player1Text = "X";
+        // const player2Text = "O"
         if (! gameOver) {
             if (Player1.turn) {
-                addPlayerInput(playerInput, player1Arr, grid, player1Text);
+                addPlayerInput(playerInput, player1Arr);
 
                 // set it to player two turn
                 Player2.turn = true;
@@ -78,13 +72,11 @@ const GameBoard = (function() {
                 if (checkWin(player1Arr)) {
                     console.log("Player 1 win");
                     player1Score += 1;
-                    // add then show again
-                    showScore(scorePlayer1);
                     gameOver = true;
                 }
 
             }  else if (Player2.turn) {
-                addPlayerInput(playerInput, player2Arr, grid, player2Text);
+                addPlayerInput(playerInput, player2Arr);
 
                 // set it to player 1 turn
                 Player2.turn = false;
@@ -94,7 +86,6 @@ const GameBoard = (function() {
                     console.log("Player 2 win");
                     gameOver = true;
                     player2Score += 1;
-                    showScore(scorePlayer2);
                 }
             }
 
@@ -103,6 +94,8 @@ const GameBoard = (function() {
                 gameOver = true;
             }
         }
+
+        return [Player1.turn, Player2.turn, GameBoard[playerInput], gameOver];
     }
 
     // check win: Two Pointers Technique
@@ -161,10 +154,36 @@ const Player2 = (function() {
 // change score
 
 // DOM logic
-
-document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("grid")) {
-        grid = e.target;
-        GameBoard.checkInput(e.target.id, grid);
+const DOMLogic = (function() {
+    function showInput(grid, text) {
+        const textDiv = document.createElement("div");
+        grid.classList.add("text-div");
+        textDiv.textContent = text;
+        grid.appendChild(textDiv);
     }
-});
+
+    document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("grid")) {
+            // current grid 
+            grid = e.target;
+
+            // check status
+            const result = GameBoard.checkInput(e.target.id);
+            const player1Turn = result[0];
+            const player2Turn = result[1]
+            let clickable = result[2];
+
+            if (! player1Turn && clickable === 1) {
+                showInput(grid, "X")
+                clickable = 0;
+            } else if (!player2Turn && clickable === 1) {
+                showInput(grid, "O")
+                clickable = 0;
+            }
+
+            console.log(player1Turn);
+            console.log(clickable);
+        }
+    });
+})();
+
