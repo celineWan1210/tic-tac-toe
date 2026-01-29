@@ -153,6 +153,17 @@ const DOMLogic = (function() {
         scoreDiv.textContent = playerScore;
     }
 
+    const winnerInfo = document.querySelector(".winner-info");
+    // show who's the winner
+    function showWinner(context) {
+        if (context === 1) {
+            winnerInfo.textContent = "Player 1 wins";
+        } else if (context === 2) {
+            winnerInfo.textContent = "Player 2 wins";
+        } else {
+            winnerInfo.textContent = "Draw";
+        }
+    }
     function resetBoard() {
         document.querySelectorAll(".text-div").forEach(div => div.remove());
     }
@@ -186,6 +197,7 @@ const DOMLogic = (function() {
             const replayBtn = document.querySelector("button");
             if (gameOver) {
                 dialog.showModal();
+                showWinner(gameOverContext);
             }
             replayBtn.addEventListener("click", ()=>{
                 GameBoard.resetGame();
