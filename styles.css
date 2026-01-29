@@ -35,7 +35,7 @@
 
 body {
     background-color: var(--secondary-color);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -83,8 +83,8 @@ body {
 /* content gameboard section */
 .play-section {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(3, 150px);
+    grid-template-columns: repeat(3, minmax(120px, 150px));
+    grid-template-rows: repeat(3, minmax(120px, 150px));
     gap: 8px;
     padding: 0px 20px 20px 20px;
 }
