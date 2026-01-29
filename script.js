@@ -47,20 +47,10 @@ const GameBoard = (function() {
         playerArr.push(BoardAlgo[playerInput]);
     }
 
-    // show score
-    // const player1Div = document.querySelector(".player-1-section");
-    // const scorePlayer1 = player1Div.querySelector(".score");
-    // const player2Div = document.querySelector(".player-2-section");
-    // const scorePlayer2 = player2Div.querySelector(".score");
-    // function showScore(scorePlayer) {
-    //     scorePlayer.textContent = player1Score;
-    // }
-
     // find player input and change the GameBoard
     function checkInput(playerInput) {
         // take turn check input until there is a win
-        // const player1Text = "X";
-        // const player2Text = "O"
+        let gameOverContext = 0;
         if (! gameOver) {
             if (Player1.turn) {
                 addPlayerInput(playerInput, player1Arr);
@@ -70,9 +60,11 @@ const GameBoard = (function() {
                 Player1.turn = false;
 
                 if (checkWin(player1Arr)) {
-                    console.log("Player 1 win");
+                    // 1 -> player 1 wins
+                    gameOverContext = 1;
                     player1Score += 1;
                     gameOver = true;
+
                 }
 
             }  else if (Player2.turn) {
@@ -83,19 +75,21 @@ const GameBoard = (function() {
                 Player1.turn = true;
 
                 if (checkWin(player2Arr)) {
-                    console.log("Player 2 win");
+                    // 2 -> player 2 wins
+                    gameOverContext = 2
                     gameOver = true;
                     player2Score += 1;
                 }
             }
 
             if (player1Arr.length === 5 && player2Arr.length === 4) {
-                console.log("Draw");
+                // 3 -> draw
+                gameOverContext = 3;
                 gameOver = true;
             }
         }
 
-        return [Player1.turn, Player2.turn, GameBoard[playerInput], gameOver];
+        return [Player1.turn, Player2.turn, GameBoard[playerInput], gameOver, gameOverContext, player1Score, player2Score];
     }
 
     // check win: Two Pointers Technique
@@ -162,6 +156,15 @@ const DOMLogic = (function() {
         grid.appendChild(textDiv);
     }
 
+    const player1Div = document.querySelector(".player-1-section");
+    const scorePlayer1 = player1Div.querySelector(".score");
+    const player2Div = document.querySelector(".player-2-section");
+    const scorePlayer2 = player2Div.querySelector(".score");
+    function showResult(playerScore, scoreDiv) {
+        scoreDiv.textContent = playerScore;
+    }
+
+
     document.addEventListener("click", (e) => {
         if (e.target.classList.contains("grid")) {
             // current grid 
@@ -172,6 +175,10 @@ const DOMLogic = (function() {
             const player1Turn = result[0];
             const player2Turn = result[1]
             let clickable = result[2];
+            const gameOver = result[3];
+            const gameOverContext = result[4];
+            const player1Score = result[5];
+            const player2Score = result[6];
 
             if (! player1Turn && clickable === 1) {
                 showInput(grid, "X")
@@ -181,6 +188,8 @@ const DOMLogic = (function() {
                 clickable = 0;
             }
 
+            showResult(player1Score, scorePlayer1);
+            showResult(player2Score, scorePlayer2);
             console.log(player1Turn);
             console.log(clickable);
         }
