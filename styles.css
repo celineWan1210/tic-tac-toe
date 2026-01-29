@@ -11,10 +11,15 @@
 
 :root {
     --header-background-color: #24527a;
+    --darker-title-color: #142d4c;
     --title-font: "Gamera";
     --secondary-color: #e0ebeb;
+    --third-color: #5dacbd;
+    --grid-color: #a7bcb9;
     --title-font-size: 48px;
     --bold: 600;
+
+    --padding: 20px;
 
     --shadow: 0px 8px 5px grey;
 }
@@ -28,6 +33,9 @@
 
 body {
     background-color: var(--secondary-color);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* header section */
@@ -38,8 +46,47 @@ body {
     font-size: var(--title-font-size);
     font-weight: var(--bold);
     box-shadow: var(--shadow);
-    padding: 20px;
+    padding: var(--padding);
 }
 .header-title {
     justify-self: center;
+}
+
+/* content (whole) */
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* player info */
+.player-info {
+    display: flex;
+    margin-bottom: var(--padding);
+    color: var(--darker-title-color);
+    font-family: "Gamera";
+    font-size: 28px;
+    gap: 24px;
+
+    align-items: center;
+    justify-content: center;
+}
+.score {
+    text-align: center;
+}
+
+
+/* content gameboard section */
+.play-section {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    min-height: calc(150px * 3);
+    gap: 8px;
+    padding: var(--padding);
+}
+.grid {
+    background-color: var(--grid-color);
+    width: 100%;
 }
