@@ -19,6 +19,7 @@
     --title-font-size: 48px;
     --bold: 600;
     --text-font-size: 28px;
+    --text-font-size-samller: 20px;
 
     --padding: 20px;
 
@@ -97,13 +98,20 @@ body {
     font-size: var(--title-font-size);
 }
 
-.game-over {
+.game-over,
+.player-enter-name{
     left: 50vw;
     top: 50vh;
     transform: translate(-50%, -50%);
     background-color: var(--secondary-color);
 
     border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.game-over .header,
+.player-enter-name .header{
+    box-shadow: none;
 }
 
 .game-over .content {
@@ -112,7 +120,7 @@ body {
     padding: 20px;
     gap: 8px;
 }
-.text {
+.winner-info {
     font-size: var(--title-font-size);
     font-family: var(--title-font);
 }
@@ -129,5 +137,46 @@ body {
 
 ::backdrop {
     background-color: var(--secondary-color);
-    opacity: 50%;
+    opacity: 70%;
+}
+
+/* form section */
+form {
+    padding: var(--padding);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.player-1-form-section p,
+.player-2-form-section p{
+    font-family: var(--title-font);
+    font-size: var(--text-font-size);
+}
+.player-1-form-section label,
+.player-2-form-section label, 
+#player-1-name,
+#player-2-name{
+    font-family: var(--title-font);
+    font-size: var(--text-font-size-samller);
+}
+#player-1-name,
+#player-2-name {
+    margin-left: 10px;
+    color: var(--header-background-color);
+    background-color: var(--secondary-color);
+    border: 1px solid var(--darker-title-color);
+    border-radius: 8px;
+}
+.submit-button {
+    display: flex;
+    justify-content: flex-end;
+}
+#confirmBtn {
+    padding: 12px 30px;
+    margin-top: 10px;
+    border-radius: 12px;
+    background-color: var(--header-background-color);
+    color: white;
+    border: none;
+    font-size: var(--text-font-size-samller);
 }
