@@ -121,12 +121,10 @@ const GameBoard = (function() {
     function resetGame() {
         player1Arr = [];
         player2Arr = [];
-        player1Score = 0;
-        player2Score = 0;
         playerTurn = 1;
 
         Object.keys(GameBoard).forEach(key => {
-            GameBoard[key] = 0;   
+            GameBoard[key] = false;   
         });
         gameOver = false;
     }
@@ -142,7 +140,7 @@ const GameBoard = (function() {
 const DOMLogic = (function() {
     function showInput(grid, text) {
         const textDiv = document.createElement("div");
-        grid.classList.add("text-div");
+        textDiv.classList.add("text-div");
         textDiv.textContent = text;
         grid.appendChild(textDiv);
     }
@@ -153,6 +151,10 @@ const DOMLogic = (function() {
     const scorePlayer2 = player2Div.querySelector(".score");
     function showResult(playerScore, scoreDiv) {
         scoreDiv.textContent = playerScore;
+    }
+
+    function resetBoard() {
+        document.querySelectorAll(".text-div").forEach(div => div.remove());
     }
 
 
@@ -186,7 +188,11 @@ const DOMLogic = (function() {
                 dialog.showModal();
             }
             replayBtn.addEventListener("click", ()=>{
-
+                GameBoard.resetGame();
+                
+                // select all entered text-div and delete
+                resetBoard();
+                dialog.close();
             })
         }
     });
