@@ -164,10 +164,17 @@ const DOMLogic = (function() {
         
         const player1NameDisplay = document.querySelector(".player1");
         const player2NameDisplay = document.querySelector(".player2");
+
+        const form = document.querySelector("form");
         playerEnterName.showModal();
 
         submit.addEventListener("click", (e)=>{
             e.preventDefault();
+            
+            if (!form.checkValidity()) {
+                form.reportValidity(); // show browser messages
+                return;
+            }
 
             player1Name = player1NameSection.value;
             player2Name = player2NameSection.value;
